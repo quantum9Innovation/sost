@@ -1,0 +1,33 @@
+{
+  "name": "sost",
+  "version": "0.1.0",
+  "description": "Like the canvas, but in three dimensions",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node index.js",
+    "build": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quantum9Innovation/sost.git"
+  },
+  "keywords": [
+    "web",
+    "canvas",
+    "graphing-calculator",
+    "3d",
+    "3d-graphics",
+    "canvas3d",
+    "3d-graphing-calculator"
+  ],
+  "author": "quantum9innovation (q9i)",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/quantum9Innovation/sost/issues"
+  },
+  "homepage": "https://github.com/quantum9Innovation/sost#readme",
+  "dependencies": {
+    "mocha": "^10.0.0"
+  }
+}
