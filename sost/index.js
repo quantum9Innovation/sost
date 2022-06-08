@@ -13,6 +13,9 @@ module.exports = {
     Canvas3D,
 
     // Modules
-    core
+    core,
+
+    // Metadata
+    version: 'v0.1.0',
 
 }

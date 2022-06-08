@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "start": "node index.js",
-    "build": "node index.js"
+    "build": "scripts/build.sh",
+    "start": "scripts/start.sh"
   },
   "repository": {
     "type": "git",
@@ -29,5 +29,10 @@
   "homepage": "https://github.com/quantum9Innovation/sost#readme",
   "dependencies": {
     "mocha": "^10.0.0"
+  },
+  "devDependencies": {
+    "browserify": "^17.0.0",
+    "canvas": "^2.9.1",
+    "terser": "^5.14.0"
   }
 }
