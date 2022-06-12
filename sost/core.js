@@ -89,20 +89,19 @@ class PixelSpace {
         // Decompose point into components
         let [x, _y, z] = point
 
-        // Compute new point components
-        let xNew = x
-        let yNew = z
-
         // Translate point onto canvas
-        xNew += this.Canvas.width / 2
-        yNew += this.Canvas.height / 2
+        x += this.Canvas.width / 2
+        z += this.Canvas.height / 2
 
         // Scale point to canvas size
-        xNew *= this.Canvas.cwidth / this.Canvas.width
-        yNew *= this.Canvas.cheight / this.Canvas.height
+        x *= this.Canvas.cwidth / this.Canvas.width
+        z *= this.Canvas.cheight / this.Canvas.height
+
+        // Flip from bottom-left to top-left origin
+        z = this.Canvas.cheight - z
 
         // Return new point
-        return [xNew, yNew]
+        return [x, z]
 
     }
 
@@ -126,16 +125,16 @@ class PointSpace {
 
         // Rotate point in Cartesian space such that 
         // the viewing angle is parallel to the XZ plane
-        let [x, y, z] = this.Canvas.Camera.rotate(point)
+        let nPoint = this.Canvas.Camera.rotate(point)
         
         // Translate into point space
-        [x, y, z] = this.Canvas.Camera.translate([x, y, z])
+        nPoint = this.Canvas.Camera.translate(nPoint)
 
         // Zoom into point space
-        [x, y, z] = this.Canvas.Camera.scale([x, y, z])
+        nPoint = this.Canvas.Camera.scale(nPoint)
 
         // Return new point
-        return [x, y, z]
+        return nPoint
 
     }
 
@@ -152,16 +151,16 @@ class CartesianSpace {
         // Direct inverse of `PointSpace.fromCartesian`
 
         // Zoom out of point space
-        let [x, y, z] = this.Canvas.Camera.scale_inv(point)
+        let nPoint = this.Canvas.Camera.scale_inv(point)
 
         // Translate into Cartesian space
-        [x, y, z] = this.Canvas.Camera.translate_inv([x, y, z])
+        nPoint = this.Canvas.Camera.translate_inv(nPoint)
 
         // Rotate to perspective
-        [x, y, z] = this.Canvas.Camera.rotate_inv([x, y, z])
+        nPoint = this.Canvas.Camera.rotate_inv(nPoint)
 
         // Return new point
-        return [x, y, z]
+        return nPoint
 
     }
 
@@ -196,11 +195,12 @@ class Canvas3D {
 
         // Control variables
         this.pointStyle = 'red'
-        this.pointSize = 1
+        this.pointSize = 2.5
         this.strokeStyle = 'white'
-        this.lineWidth = 1
+        this.lineWidth = 2.5
         this.fillStyle = '#4ca9d4'
         this.altFillStyle = '#3f8cb0'
+        this.stroke = true
         this.fill = true
 
     }
@@ -221,12 +221,18 @@ class Canvas3D {
 
     }
 
+    // Controls
+    clear() {
+        // Clear the canvas
+        this.ctx.clearRect(0, 0, this.cwidth, this.cheight)
+    }
+
     // Primitives (point space)
     p_point(vec) {
         // Draw a point in point space
 
         // Convert point to pixel space
-        let [x, y] = this.pixel.fromPoint(vec)
+        let [x, y] = this.Pixel.fromPoint(vec)
 
         // Draw point
         this.ctx.beginPath()
@@ -235,16 +241,82 @@ class Canvas3D {
         this.ctx.fill()
 
     }
+    p_line(u, v) {
+        // Draw a line in point space
+
+        // Convert points to pixel space
+        let [x1, y1] = this.Pixel.fromPoint(u)
+        let [x2, y2] = this.Pixel.fromPoint(v)
+
+        // Draw line
+        this.ctx.beginPath()
+        this.ctx.moveTo(x1, y1)
+        this.ctx.lineTo(x2, y2)
+        this.ctx.strokeStyle = this.strokeStyle
+        this.ctx.lineWidth = this.lineWidth
+        this.ctx.stroke()
+    }
+    p_polygon(points) {
+        // Draw a polygon in point space
+
+        // Convert points to pixel space
+        let nPoints = []
+        for (let point of points) {
+            nPoints.push(this.Pixel.fromPoint(point))
+        }
+
+        // Draw polygon
+        this.ctx.beginPath()
+        this.ctx.moveTo(nPoints[0][0], nPoints[0][1])
+        for (let i = 1; i < nPoints.length; i++) {
+            this.ctx.lineTo(nPoints[i][0], nPoints[i][1])
+        }
+        this.ctx.closePath()
+
+        // Render polygon
+        if (this.fill) {
+            this.ctx.fillStyle = this.fillStyle
+            this.ctx.fill()
+        } else if (this.stroke) {
+            this.ctx.strokeStyle = this.strokeStyle
+            this.ctx.lineWidth = this.lineWidth
+            this.ctx.stroke()
+        }
+
+    }
 
     // Low-level abstractions (Cartesian space)
     point(vec) {
         // Draw a point in Cartesian space
 
         // Convert point to point space
-        let p_vec = this.point.fromCartesian(vec)
+        let p_vec = this.Point.fromCartesian(vec)
 
         // Draw point
         this.p_point(p_vec)
+
+    }
+    line(u, v) {
+        // Draw a line in Cartesian space
+
+        // Convert points to point space
+        let p_u = this.Point.fromCartesian(u)
+        let p_v = this.Point.fromCartesian(v)
+
+        // Draw line
+        this.p_line(p_u, p_v)
+    }
+    polygon(points) {
+        // Draw a polygon in Cartesian space
+
+        // Convert points to point space
+        let p_points = []
+        for (let point of points) {
+            p_points.push(this.Point.fromCartesian(point))
+        }
+
+        // Draw polygon
+        this.p_polygon(p_points)
 
     }
     

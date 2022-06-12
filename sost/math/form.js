@@ -65,11 +65,11 @@ const rotate = (vec, theta, phi) => {
     // about the YZ plane by `phi` radians
 
     // Rotate
-    let [x, y, z] = rotateXY(vec, theta)
-    [x, y, z] = rotateYZ([x, y, z], phi)
+    let nVec = rotateXY(vec, theta)
+    nVec = rotateYZ(nVec, phi)
 
     // Return new vector
-    return [x, y, z]
+    return nVec
 
 }
 
