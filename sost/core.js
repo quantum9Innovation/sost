@@ -277,7 +277,8 @@ class Canvas3D {
         if (this.fill) {
             this.ctx.fillStyle = this.fillStyle
             this.ctx.fill()
-        } else if (this.stroke) {
+        } 
+        if (this.stroke) {
             this.ctx.strokeStyle = this.strokeStyle
             this.ctx.lineWidth = this.lineWidth
             this.ctx.stroke()
