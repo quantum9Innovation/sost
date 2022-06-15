@@ -13,7 +13,6 @@ console.log('All results are stored in artifacts/')
 // Canvases
 const canvas = createCanvas(256, 256)
 const ctx = canvas.getContext('2d')
-console.log(canvas)
 const three = new sost.Canvas3D(ctx, 2, 2, 2)
 three.Camera.angle = [Math.PI / 4, Math.PI / 4]
 
