@@ -1,8 +1,7 @@
 // Initialize math-related functions and export them
 
 // Imports
-const form = require('./form')
-
+import * as form from './form'
 
 // Exports
-module.exports = { form }
+export { form }
