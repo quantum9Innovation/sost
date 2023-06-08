@@ -59,7 +59,7 @@ At this point, it's important to briefly outline the three main "spaces" in whic
 The first and most basic of which is the pixel space, which deals with actual 2D coordinates on the `ctx` variable.
 The second is known as "point space," because it is a user-defined 3D space, which Sost uses to project objects onto 2D pixel space.
 Point space is defined by three dimensions: width, height, and depth, which in turn tells Sost how to scale the objects it draws in 3D space onto the 2D canvas.
-The middle of the canvas represents the origin of the point space, that is the point $ (0, 0, 0) $.
+The middle of the canvas represents the origin of the point space, that is the point $(0, 0, 0)$.
 
 At this point you may be wondering what the third space is.
 The third space is essentially the same as point space, except that it can be scaled and rotated in three dimensions.
@@ -68,7 +68,7 @@ In essence, every point that you tell Sost to draw in Cartesian space goes throu
 Point space, in this sense, acts as a static intermediary between Cartesian and pixel space.
 Objects drawn in point space won't rotate, scale, or otherwise change while those in Cartesian space will.
 Most high-level objects in Sost are drawn in Cartesian space, while lower-level, more primitive objects are drawn in point space.
-By default, point space has a scaling factor of $ 1 $, making it the same size as Cartesian space, and a perspective parallel to the xz plane.
+By default, point space has a scaling factor of 1, making it the same size as Cartesian space, and a perspective parallel to the xz plane.
 
 To create a 3D canvas, we need to use the `Canvas3D` method and pass in the dimensions of our point space in the order of width, height, and depth.
 For example, if we wanted to create a canvas defined by a cube with side length 2 centered at the origin, we would use:
@@ -77,14 +77,14 @@ For example, if we wanted to create a canvas defined by a cube with side length 
 const three = new sost.Canvas3D(ctx, 2, 2, 2)
 ```
 
-The eight corners of this cube are given by the vertices $ (\pm 1, \pm 1, \pm 1) $, with the center at the origin $ (0, 0, 0) $.
+The eight corners of this cube are given by the vertices $(\pm 1, \pm 1, \pm 1)$, with the center at the origin $(0, 0, 0)$.
 
 We can set an initial perspective for our Cartesian space by accessing the built-in Camera object.
-Perspectives are passed in as an array of two angles, the first representing rotation over the xy plane ($ \theta $) and the second representing rotation over the yz plane ($ \phi $).
+Perspectives are passed in as an array of two angles, the first representing rotation over the xy plane ($\theta$) and the second representing rotation over the yz plane ($\phi$).
 Scaling can be adjusted as well by accessing the `zoom` property.
 Translating the origin can be achieved by setting the `center` property to the new origin coordinates.
 
-Let's set a perspective of $ (\theta, \phi) = (\frac{\pi}{4}, \frac{\pi}{4} ) $.
+Let's set a perspective of $(\theta, \phi) = (\frac{\pi}{4}, \frac{\pi}{4} )$.
 
 ```js
 three.Camera.angle = [Math.PI / 4, Math.PI / 4]
