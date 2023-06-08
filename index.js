@@ -37,6 +37,7 @@ const refresh = () => {
     three.line(...Z)
 
     // Points
+    three.stroke = false
     three.pointSize = 5
     three.pointStyle = 'white'
     three.point(origin)

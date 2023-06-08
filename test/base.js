@@ -41,6 +41,7 @@ const draw = () => {
     three.line(...Z)
 
     // Points
+    three.stroke = false
     three.pointStyle = 'white'
     three.point(origin)
 
